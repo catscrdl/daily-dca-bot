@@ -1,0 +1,10 @@
+FROM python:3
+
+RUN pip install --no-cache-dir --upgrade pip && \
+    pip install --no-cache-dir requests pyyaml
+
+COPY . /app
+
+WORKDIR /app
+
+CMD ["python", "./motley_fool_content.py"]
