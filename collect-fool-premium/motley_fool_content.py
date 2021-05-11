@@ -58,13 +58,16 @@ def get_tickers(service):
     recommendations = bs_content.find_all("div",{"class":"watch-state-button"})
     tickers = []
     for recommendation in recommendations:
-        #print(json.dumps(recommendation.text))
         tickers.append(json.dumps(recommendation.text).split()[1])
     tickers = set(tickers)
     return tickers
 
 sa_tickers = get_tickers("stock_advisor")
 rb_tickers = get_tickers("rule_breakers")
+
+#results = '{"stock_advisor":'+sa_tickers+', "rule_breakers":'+rb_tickers+'}'
+#result_json_object = json.dumps(list(results))
+#print(result_json_object)
 
 print(f"Stock Advisor Picks: {sa_tickers}")
 print(f"Rule Breakers Picks: {rb_tickers}")
