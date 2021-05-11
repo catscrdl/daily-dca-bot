@@ -5,14 +5,14 @@ from urllib.parse import urlparse, parse_qs
 import yaml
 import json
 
-def get_tickers(service):
-    email = ""
-    password = ""
+def get_tickers(service, credentials):
+    email = credentials['email']
+    password = credentials['password']
 
-    with open('config.yml') as file:
-        creds = yaml.load(file, Loader=yaml.FullLoader)
-        email = creds[service]['email']
-        password = creds[service]['password']
+    #with open('config.yml') as file:
+    #    creds = yaml.load(file, Loader=yaml.FullLoader)
+    #    email = creds[service]['email']
+    #    password = creds[service]['password']
 
     # Set global session user agent once
     s = requests.Session()
@@ -60,7 +60,7 @@ def get_tickers(service):
     for recommendation in recommendations:
         tickers.append(json.dumps(recommendation.text).split()[1])
     tickers = set(tickers)
-    return tickers
+    return list(tickers)
 
 #sa_tickers = get_tickers("stock_advisor")
 #rb_tickers = get_tickers("rule_breakers")
