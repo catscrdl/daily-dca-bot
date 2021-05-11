@@ -1,1 +1,1 @@
-# daily-dca-bot
+# dca_fool
