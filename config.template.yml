@@ -1,0 +1,25 @@
+enviornment: "paper"
+sources:
+  motley_fool_stock_advisor:
+    email: fake@fake.com
+    password: Hunter2
+    amount: 3
+  motley_fool_rule_breakers:
+    email: fake@fake.com
+    password: Abc123
+    amount: 2
+    custom:
+      - BYND: 2
+      - MELI: 3
+  google_sheet:
+    sheet_id: really_long-sheet_id_after_publishing-to-web-as_csv_goes-here
+    amount: 1
+alpaca:
+  live:
+    endpoint: https://api.alpaca.markets
+    api_key_id: AAAAAAAAAAAAAA
+    secret_key: BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBbbbb
+  paper:
+    endpoint: https://paper-api.alpaca.markets
+    api_key_id: cCCCCCCCCCCCCC
+    secret_key: DDDDDDDDDDDDDddDDddddddddddddddddddddddddd
