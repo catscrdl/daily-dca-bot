@@ -20,6 +20,8 @@ https://medium.com/automation-generation/manually-trading-stocks-using-postman-a
 
 Update the live and paper secret keys with the keys you generated. I highly recommend you test this bot out in paper trading mode for a few risks.
 
+If the ticker doesn't support partial shares, the code will buy one share on the 3rd Wednesday of every month if the ticker is less than $200. This is not configureable at this time unless you want to modify the code.
+
 When you want to trade live, set the environment to "live" in the config file. The creator assumes no responsibility or risk for your own trading activities.
 
 ## Default Amounts
