@@ -36,7 +36,7 @@ def buy_stock(symbol, amount, environment):
             val += stock_bar.o
             val += stock_bar.c
             count += 2
-        if val/count < 200 and date.today().isoweekday() == 3 and date.today().day >= 15:
+        if val/count < 200 and date.today().isoweekday() == 3 and date.today().day >= 15 and date.today().day < 22:
             trade_result = api.submit_order(symbol = symbol, qty= 1 , side='buy', type='market', time_in_force='day')
         else:
             return "no trade - not right day or stock costs too much"
