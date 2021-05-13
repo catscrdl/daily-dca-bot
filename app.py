@@ -25,7 +25,7 @@ def get_stocks_to_buy(data_source, config):
     elif data_source == "google_sheet":
         res = {}
         default_amount = config['amount']
-        csv_url = 'https://docs.google.com/spreadsheets/d/e/{key}/pub?gid=0&single=true&output=csv'.format(key = config['sheet_id'])
+        csv_url = config['sheet_url']
         csv_obj = csv.reader(StringIO(requests.get(url=csv_url).content.decode("utf-8") ), delimiter=',')
         it = iter(csv_obj)
         next(it, None)

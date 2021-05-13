@@ -12,7 +12,7 @@ sources:
       - BYND: 2
       - MELI: 3
   google_sheet:
-    sheet_id: really_long-sheet_id_after_publishing-to-web-as_csv_goes-here
+    sheet_url: published_sheet_url_goes_here
     amount: 1
 alpaca:
   live:
