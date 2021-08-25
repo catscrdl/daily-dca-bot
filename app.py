@@ -11,21 +11,35 @@ from io import StringIO
 def get_stocks_to_buy(data_source, config):
     if data_source == "motley_fool_stock_advisor":
         res = {}
-        for ticker in get_tickers("stock_advisor", config):
-            res[ticker] = config['amount']
-        if 'custom' in config:
-            for custom_amount in config['custom']:
-                ticker = list(custom_amount.keys())[0]
-                res[ticker] = custom_amount[ticker]
+        count = 0
+        while res = {}:
+            try:
+                for ticker in get_tickers("stock_advisor", config):
+                    res[ticker] = config['amount']
+                if 'custom' in config:
+                    for custom_amount in config['custom']:
+                        ticker = list(custom_amount.keys())[0]
+                        res[ticker] = custom_amount[ticker]
+            except Exception as e:
+                print('Failure retrieving stock advisor picks. Attempt ' + count)
+                count += 1
+                print(e)
         return res
     elif data_source == "motley_fool_rule_breakers":
         res = {}
-        for ticker in get_tickers("rule_breakers", config):
-            res[ticker] = config['amount']
-        if 'custom' in config:
-            for custom_amount in config['custom']:
-                ticker = list(custom_amount.keys())[0]
-                res[ticker] = custom_amount[ticker]
+        count = 0
+        while res = {}:
+            try:
+                for ticker in get_tickers("rule_breakers", config):
+                    res[ticker] = config['amount']
+                if 'custom' in config:
+                    for custom_amount in config['custom']:
+                        ticker = list(custom_amount.keys())[0]
+                        res[ticker] = custom_amount[ticker]
+            except Exception as e:
+                print('Failure retrieving rule breaker picks. Attempt ' + count)
+                count += 1
+                print(e)
         return res
     elif data_source == "google_sheet":
         res = {}
