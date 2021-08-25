@@ -18,7 +18,7 @@ Follow instructions here to get your API keys.
 
 https://medium.com/automation-generation/manually-trading-stocks-using-postman-and-the-alpaca-api-f45542d33143#:~:text=Getting%20your%20API%20Keys,can%20always%20regenerate%20your%20keys.
 
-Update the live and paper secret keys with the keys you generated. I highly recommend you test this bot out in paper trading mode for a few risks.
+Update the live and paper secret keys with the keys you generated. I highly recommend you test this bot out in paper trading mode for a few weeks.
 
 If the ticker doesn't support partial shares, the code will buy one share on the 3rd Wednesday of every month if the ticker is less than $200. This is not configureable at this time unless you want to modify the code.
 
