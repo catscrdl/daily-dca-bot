@@ -68,9 +68,11 @@ def determine_buy_the_dip(symbol):
 
     try:
         print('determine if we buy the dip for ' + symbol)
-        open_price = historical_price = api.get_barset(symbol, 'day', 1)[symbol][0].o
-        current_price = api.get_barset(symbol, 'day', 1)[symbol][0].c
-        if current_price < open_price:
+        previous_close = historical_price = api.get_barset(symbol, 'day', 2)[symbol][0].c
+        current_price = api.get_barset(symbol, 'minute', 1)[symbol][0].c
+        print('previous close: ' + str(previous_close))
+        print('current price: ' + str(current_price))
+        if current_price < previous_close:
             stock_dipped = True
     except Exception as e:
         print(e)
