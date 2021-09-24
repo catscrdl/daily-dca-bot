@@ -1,5 +1,6 @@
 from time import sleep
 from alpaca_interface import buy_stock
+from alpaca_interface import determine_buy_the_dip
 from motley_fool_content import get_tickers
 import yaml
 import requests
@@ -12,14 +13,18 @@ def get_stocks_to_buy(data_source, config):
     if data_source == "motley_fool_stock_advisor":
         res = {}
         count = 0
-        while res = {}:
+        while res == {}:
             try:
-                for ticker in get_tickers("stock_advisor", config):
+                tickers, new_tickers = get_tickers("stock_advisor", config)
+                for ticker in tickers:
                     res[ticker] = config['amount']
                 if 'custom' in config:
                     for custom_amount in config['custom']:
                         ticker = list(custom_amount.keys())[0]
                         res[ticker] = custom_amount[ticker]
+                for ticker in tickers:
+                    if ticker in new_tickers:
+                        res[ticker] = 20
             except Exception as e:
                 print('Failure retrieving stock advisor picks. Attempt ' + count)
                 count += 1
@@ -28,14 +33,18 @@ def get_stocks_to_buy(data_source, config):
     elif data_source == "motley_fool_rule_breakers":
         res = {}
         count = 0
-        while res = {}:
+        while res == {}:
             try:
-                for ticker in get_tickers("rule_breakers", config):
+                tickers, new_tickers = get_tickers("rule_breakers", config)
+                for ticker in tickers:
                     res[ticker] = config['amount']
                 if 'custom' in config:
                     for custom_amount in config['custom']:
                         ticker = list(custom_amount.keys())[0]
                         res[ticker] = custom_amount[ticker]
+                for ticker in tickers:
+                    if ticker in new_tickers:
+                        res[ticker] = 20
             except Exception as e:
                 print('Failure retrieving rule breaker picks. Attempt ' + count)
                 count += 1
@@ -51,9 +60,9 @@ def get_stocks_to_buy(data_source, config):
         for row in it:
             ticker = row[0]
             if row[1] == '':
-                res[ticker] = default_amount
+                res[ticker] = int(default_amount)
             else:
-                res[ticker] = row[1]
+                res[ticker] = int(row[1])
         return res
     else:
         return {}
@@ -74,18 +83,31 @@ def main():
     enviornment = "paper"
     with open('config.yml') as file:
         config_file = yaml.load(file, Loader=yaml.FullLoader)
-        environment = config_file['enviornment']
+        environment = config_file['environment']
         sources = config_file['sources']
         for source in sources:
             if source == "do_not_buy_list":
                 stocks_to_not_buy = get_stocks_to_not_buy(sources[source])
             else:
-                stocks_to_buy.update(get_stocks_to_buy(source, sources[source]))
+                if stocks_to_buy == {}:
+                    stocks_to_buy = get_stocks_to_buy(source, sources[source])
+                else:
+                    new_stocks = get_stocks_to_buy(source, sources[source])
+                    for new_stock in new_stocks.keys():
+                        if new_stock in stocks_to_buy.keys() and new_stocks[new_stock] > stocks_to_buy[new_stock]:
+                            stocks_to_buy[new_stock] = new_stocks[new_stock]
+                        elif new_stock not in stocks_to_buy.keys():
+                            stocks_to_buy[new_stock] = new_stocks[new_stock]
+                #stocks_to_buy.update(get_stocks_to_buy(source, sources[source]))
+    print('Stocks to buy and amounts')
+    print(stocks_to_buy)
     for key in stocks_to_buy.keys():
         print(key)
         if key not in stocks_to_not_buy:
             try:
-                print(buy_stock(key,stocks_to_buy[key],environment))
+                do_we_dip_buy = determine_buy_the_dip(key)
+                print("are we buying the dip? " + (str(do_we_dip_buy)))
+                print(buy_stock(key,stocks_to_buy[key],environment, do_we_dip_buy))
             except Exception as e:
                 print(e)
 

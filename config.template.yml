@@ -1,4 +1,4 @@
-enviornment: "paper"
+environment: "paper"
 sources:
   motley_fool_stock_advisor:
     email: fake@fake.com
@@ -14,6 +14,7 @@ sources:
   google_sheet:
     sheet_url: published_sheet_url_goes_here
     amount: 1
+buy_the_dip: false
 alpaca:
   live:
     endpoint: https://api.alpaca.markets

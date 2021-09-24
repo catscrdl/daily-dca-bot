@@ -4,6 +4,7 @@ from bs4 import BeautifulSoup as bs
 from urllib.parse import urlparse, parse_qs
 import yaml
 import json
+import re
 
 def get_tickers(service, credentials):
     email = credentials['email']
@@ -60,14 +61,18 @@ def get_tickers(service, credentials):
     for recommendation in recommendations:
         tickers.append(json.dumps(recommendation.text).split()[1])
     tickers = set(tickers)
-    return list(tickers)
 
-#sa_tickers = get_tickers("stock_advisor")
-#rb_tickers = get_tickers("rule_breakers")
-
-#results = '{"stock_advisor":'+sa_tickers+', "rule_breakers":'+rb_tickers+'}'
-#result_json_object = json.dumps(list(results))
-#print(result_json_object)
-
-#print(f"Stock Advisor Picks: {sa_tickers}")
-#print(f"Rule Breakers Picks: {rb_tickers}")
+    new_rec_tickers = []
+    try:
+        new_recs = bs_content.find_all("th",{"class":"primary"})
+        for new_rec in new_recs:
+            if "New Stock" in new_rec.text:
+                z = re.search("(?=\/).*(?<=.png)", str(new_rec))
+                if z is not None:
+                    new_rec_tickers.append(z.group(0).split('/')[-1].split('.')[0])
+    except Exception as e:
+        print("Failed to get new recommendations")
+        print(e)
+    print("new recommendations")
+    print(new_rec_tickers)
+    return list(tickers), new_rec_tickers
