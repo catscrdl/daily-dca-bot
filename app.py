@@ -15,12 +15,16 @@ def get_stocks_to_buy(data_source, config):
         count = 0
         while res == {}:
             try:
-                for ticker in get_tickers("stock_advisor", config):
+                tickers, new_tickers = get_tickers("stock_advisor", config)
+                for ticker in tickers:
                     res[ticker] = config['amount']
                 if 'custom' in config:
                     for custom_amount in config['custom']:
                         ticker = list(custom_amount.keys())[0]
                         res[ticker] = custom_amount[ticker]
+                for ticker in tickers:
+                    if ticker in new_tickers:
+                        res[ticker] = 20
             except Exception as e:
                 print('Failure retrieving stock advisor picks. Attempt ' + count)
                 count += 1
@@ -31,12 +35,16 @@ def get_stocks_to_buy(data_source, config):
         count = 0
         while res == {}:
             try:
-                for ticker in get_tickers("rule_breakers", config):
+                tickers, new_tickers = get_tickers("rule_breakers", config)
+                for ticker in tickers:
                     res[ticker] = config['amount']
                 if 'custom' in config:
                     for custom_amount in config['custom']:
                         ticker = list(custom_amount.keys())[0]
                         res[ticker] = custom_amount[ticker]
+                for ticker in tickers:
+                    if ticker in new_tickers:
+                        res[ticker] = 20
             except Exception as e:
                 print('Failure retrieving rule breaker picks. Attempt ' + count)
                 count += 1
@@ -81,7 +89,16 @@ def main():
             if source == "do_not_buy_list":
                 stocks_to_not_buy = get_stocks_to_not_buy(sources[source])
             else:
-                stocks_to_buy.update(get_stocks_to_buy(source, sources[source]))
+                if stocks_to_buy == {}:
+                    stocks_to_buy = get_stocks_to_buy(source, sources[source])
+                else:
+                    new_stocks = get_stocks_to_buy(source, sources[source])
+                    for new_stock in new_stocks.keys():
+                        if new_stock in stocks_to_buy.keys() and new_stocks[new_stock] > stocks_to_buy[new_stock]:
+                            stocks_to_buy[new_stock] = new_stocks[new_stock]
+                        elif new_stock not in stocks_to_buy.keys():
+                            stocks_to_buy[new_stock] = new_stocks[new_stock]
+                #stocks_to_buy.update(get_stocks_to_buy(source, sources[source]))
     print('Stocks to buy and amounts')
     print(stocks_to_buy)
     for key in stocks_to_buy.keys():
