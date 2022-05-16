@@ -24,7 +24,7 @@ def get_stocks_to_buy(data_source, config):
                         res[ticker] = custom_amount[ticker]
                 for ticker in tickers:
                     if ticker in new_tickers:
-                        res[ticker] = 20
+                        res[ticker] = config['new_stock_amount']
             except Exception as e:
                 print('Failure retrieving stock advisor picks. Attempt ' + count)
                 count += 1
@@ -44,7 +44,7 @@ def get_stocks_to_buy(data_source, config):
                         res[ticker] = custom_amount[ticker]
                 for ticker in tickers:
                     if ticker in new_tickers:
-                        res[ticker] = 20
+                        res[ticker] = config['new_stock_amount']
             except Exception as e:
                 print('Failure retrieving rule breaker picks. Attempt ' + count)
                 count += 1

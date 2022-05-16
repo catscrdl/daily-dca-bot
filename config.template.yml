@@ -4,6 +4,7 @@ sources:
     email: fake@fake.com
     password: Hunter2
     amount: 3
+    new_stock_amount: 7
   motley_fool_rule_breakers:
     email: fake@fake.com
     password: Abc123
@@ -11,6 +12,7 @@ sources:
     custom:
       - BYND: 2
       - MELI: 3
+    new_stock_amount: 5
   google_sheet:
     sheet_url: published_sheet_url_goes_here
     amount: 1
